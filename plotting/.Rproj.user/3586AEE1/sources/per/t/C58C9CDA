@@ -1,0 +1,26 @@
+{
+    "id": "C58C9CDA",
+    "path": "~/padhai/thesis/code/ET-new/plotting/seedsim_analysis.R",
+    "project_path": "seedsim_analysis.R",
+    "type": "r_source",
+    "hash": "3211588825",
+    "contents": "",
+    "dirty": false,
+    "created": 1700508055834.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "12,23",
+        "scrollLine": "2"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1700508598,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1700508598722,
+    "read_only": false,
+    "read_only_alternatives": []
+}

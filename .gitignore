@@ -1,1 +1,10 @@
 commit_push.sh
+b-d_space/
+D1-D2_space/
+D1_neq_D2/
+heatmaps.R
+plotting_thresholds.R
+seedsim_analysis.R
+simdata.R
+thresholds_data/
+thresholds.R

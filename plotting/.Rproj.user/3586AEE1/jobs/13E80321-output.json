@@ -1,0 +1,2 @@
+[1,"[1] \"b= 0 d= 0\"\n"]
+[2,"Error in eval(statements[[idx]], envir = sourceEnv) : \n  object 'growth_params_E2' not found\nCalls: sourceWithProgress ... checkFunc -> eval -> Func2 -> func -> with -> as.list\nExecution halted\n"]
