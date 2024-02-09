@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 theme_set(theme_linedraw())
 
 # directory with simulation data
-dirname <- "padhai/extinction-therapy/code/ET-new/simulation-data/fig_1_analytical_comparison/1mil_2.2"
+dirname <- "/path/to/simulation/data"
 
 # number of runs in the simulations, can be checked in the params.csv files
 n_runs <- 500
