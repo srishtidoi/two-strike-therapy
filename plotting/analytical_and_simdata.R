@@ -6,23 +6,22 @@ suppressPackageStartupMessages({
   library(latex2exp)
   library(deSolve)
 })
-# setting theme for plots
+# setting the theme for plots
 theme_set(theme_linedraw())
 
-# data points from simulation
 # directory with simulation data
-dirname <- "simulation-data/"
+dirname <- "padhai/extinction-therapy/code/ET-new/simulation-data/fig_1_analytical_comparison/1mil_2.2"
 
-# number of runs of each simulation, can be chacked in the params.csv files
+# number of runs in the simulations, can be checked in the params.csv files
 n_runs <- 500
 
 # extracting config data (list of all parameters with ArrayTaskIDs)
-data <- read.table(file = paste(dir,"config.txt",sep = "/"), sep = '\t', header = TRUE)
+data <- read.table(file = paste(dirname,"config.txt",sep = "/"), sep = '\t', header = TRUE)
 
 # extracting extinction probabilities from results file for each parameter set
 results <- data.frame()
 for(i in data$ArrayTaskID){
-  probs <- read.csv(paste(dir, i, "results.txt", sep = "/"), header = FALSE)
+  probs <- read.csv(paste(dirname, i, "results.txt", sep = "/"), header = FALSE)
   probs <- probs %>% remove_rownames %>% column_to_rownames(var="V1") 
   results <- rbind(results, c(probs[2,], probs[3,], probs[4,]))
 }
@@ -33,26 +32,26 @@ data <- cbind(data, results)
 data$SE <- sqrt(data$extinction*(1 - data$extinction)/n_runs) 
 
 # point of max extinction probability
-maxn <- data[which(data$extinction==max(data$extinction)),]$n_tau
+maxn <- data[which.max(data$extinction),]$n_tau
 
-# analytical curve
+# analytical model params
 ord <- 100 # order of initial population relative to 10^4
-nr2 <- 1*ord
-nr1 <- 1*ord
-nr12 <- 0
-ns <- 10000*ord
+nr2 <- 1*ord # initial R_2 population
+nr1 <- 1*ord # initial R_1 population
+nr12 <- 0 # initial R_1,2 population
+ns <- 10000*ord # initial S population
 N0 <- ns+nr1+nr2+nr12
-K <- N0
-p2 <- 0.25 # probability of mutating from S --> R2
-p1 <- 0.25 # probability of mutating from S --> R1
-mu <- 0.00001
-mu2 <- 0.00001
-a1 <- mu*p1
+K <- N0 # carrying capacity
+p2 <- 0.25 # probability of mutating from S --> R2 (given mutation occurs)
+p1 <- 0.25 # probability of mutating from S --> R1 (given mutation occurs)
+mu <- 0.00001 # total mutation probability in E_1
+mu2 <- 0.00001 # total mutation probability in E_2
+a1 <- mu*p1 
 a2 <- mu*p2
 a1_2 <- mu2*p1
 a2_2 <- mu2*p2
-D <- 2.0 # treatment level
-D2 <- D
+D <- 2.0 # treatment level in E_1
+D2 <- D # treatment level in E_2
 b <- 1 # intrinsic birth rate
 d <- 0.1 # intrinsic death rate
 s <- b-d
@@ -60,7 +59,7 @@ c <- 0.5 # cost of resistance
 r <- s-c
 pi2 <- 1-exp(-2*(r)/(b + d - c)) # establishment probability
 
-
+# growth equations
 grow_E1 <- function(t, init_state, growth_params){
   with(as.list(c(init_state, growth_params)),{
     dS = S*(gs*(1-(S+R1+R2+R12)/K) - D) - S*(a1+a2)
@@ -102,20 +101,17 @@ results <- c()
 step <- 10000
 ntrange <- seq(nmin_num,N0,step)
 
+# calculating probabilities of extinction (P_E)
 PEs <- c()
-PE_0 <- 1 # initial condition
-
 for(N_tau in ntrange){
-  print(N_tau)
+  #print(N_tau)
   idx <- which.min(abs(T_E1_premin - N_tau))
-  p <- S[idx]/(S[idx]+R1[idx]+R2[idx]+R12[idx])
-  growth <- g(p) # growth rate at N_tau (without treatment)
 
   # growth in E2
   init_state_E2 <- c(S=S[idx], R1=R1[idx])
   times_E2 <- seq(0,200,by=0.1)
   
-  out_E2 <- ode(y=init_state_E2, times=times_E2, func=grow_E2_alt, parms=growth_params)
+  out_E2 <- ode(y=init_state_E2, times=times_E2, func=grow_E2, parms=growth_params)
   time_E2 <- out_E2[,"time"]
   S_E2 <- out_E2[,"S"]
   R1_E2 <- out_E2[,"R1"]
@@ -126,30 +122,30 @@ for(N_tau in ntrange){
   logPE <- -pi2*R2[idx] - pi2*R12[idx] - pi2*a2*I_S - pi2*a2*I_R1
   PE <- exp(logPE)
   PEs <- c(PEs, PE)
-  
 }
 
 PEs[which(PE>1)]=1
 PE_data <- data.frame(ntrange, PEs)
 colnames(PE_data) <- c("n_tau", "PE")
-nmax <- 100000
-nmin <- min(T_E1)
 
-print(nmin)
+nmin <- min(T_E1)
+print(paste("N_min = ",nmin))
 
 # plotting simulation data
-epplot <- ggplot(data=data, aes(y=extinction))+
+nmax <- 100000
+PEplot <- ggplot(data=data, aes(y=extinction))+
   geom_point(aes(x=n_tau), size=3)+
   #geom_vline(xintercept = maxn, lty=2,lwd=2,alpha=0.5)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         text=element_text(size=rel(6)),
         aspect.ratio = 1)+
-  labs(x=TeX("N(tau)"), y=TeX("Extinction probability"))+
+  labs(x=TeX("N(tau)"), y=TeX("$P_{E}$"))+
   ylim(c(0,1))+
-  geom_errorbar(aes(x=n_tau, ymin = extinction - 1.96 * SE, ymax = extinction + 1.96 * SE)) # binommial proportion 95% confidence interval
+  geom_errorbar(aes(x=n_tau, ymin = extinction - 1.96 * SE, ymax = extinction + 1.96 * SE)) # binomial proportion 95% confidence interval
 
-epplot <- epplot+
+# plotting the analytical prediction
+PEplot <- PEplot+
   geom_line(data=PE_data[which(PE_data$n_tau>-1),],
             aes(x=n_tau, y=PE), lwd=1, alpha=0.7)+
   geom_vline(xintercept = nmin, lty=2, lwd=1.5, color='red', alpha=0.7)+
@@ -159,6 +155,6 @@ epplot <- epplot+
   theme(aspect.ratio = 1, legend.position = "",
         text = element_text(size=rel(6)))
 
-pdf(paste(dir,"EPplot.pdf",sep = "/"), height = 5, width = 6)
+pdf(paste(dirname,"PEplot.pdf",sep = "/"), height = 5, width = 6)
 print(epplot)
 dev.off()
