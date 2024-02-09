@@ -9,7 +9,7 @@ rng = default_rng()
 ## parameters and initial conditions, imported from the params file
 # number of runs of the simulation
 n_runs = params.n_runs
-# number of types of cells (# strikes + 1)
+# number of types of cells 
 n = params.n
 # base birth rate of wild type
 w_lambda = params.w_lambda
