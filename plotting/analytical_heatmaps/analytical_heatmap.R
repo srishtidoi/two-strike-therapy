@@ -113,9 +113,8 @@ for(j in seq(nrow(grid_data))){
     nmin_num <- min(T_E1)
   
     p_current <- param 
+    print(paste(param_to_plot,"=",param))
   }
-  
-  print(paste("N(tau)=",N_tau,";",param_to_plot,"=",param))
   
   if(N_tau < nmin_num){
     PE <- 0
@@ -153,6 +152,13 @@ heatmap <- ggplot(data=PE_data)+
         legend.position = "", 
         text=element_text(size = rel(5)),
         panel.grid.major = element_blank())
+  # +geom_text_contour(aes(x=ntau, y=param,z = pe),
+  #                   stroke = 0.15,
+  #                   skip = 0,
+  #                   nudge_x = 0,
+  #                   check_overlap = TRUE)
+
+
 
 var_names <- ls()
 variables_to_save <- c("b","D","D2","cost","d","ord")  # add variables to save
