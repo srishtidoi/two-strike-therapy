@@ -48,7 +48,6 @@ sub_dir <- "default"
 step <- 1000
 nmax <- 100000 
 #nmax <- N0 # for Nq vs q plots
-ntrange <- seq(nmin,nmax,step)
 
 #################################################################
 
@@ -106,6 +105,7 @@ nmin_idx <- which.min(T_E1)
 T_E1_before <- T_E1[1:nmin_idx]
 T_E1_after <- T_E1[nmin_idx:length(T_E1)]
 nmin <- min(T_E1)
+ntrange <- seq(nmin,nmax,step)
 
 # Uncomment to plot tumour subpopulation dynamics in E1
 # pop_plot <- ggplot()+
