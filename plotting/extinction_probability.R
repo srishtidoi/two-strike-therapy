@@ -38,16 +38,16 @@ r <- s-cost # growth rate of resistant cells (R1,R2,R12)
 pi2 <- 1-exp(-2*(r)/(b + d - cost)) # establishment probability
 
 # path relative to the working directory
-main_dir <- "extinction_probability_plots" # for plots like Fig1A
-#main_dir <- "Nq_plots/data" # for plots like Fig1C
+#main_dir <- "extinction_probability_plots" # for plots like Fig1A
+main_dir <- "Nq_plots/data" # for plots like Fig1C
 
 # output directory name
 sub_dir <- "default"
 
 # switching points
 step <- 1000
-nmax <- 100000 
-#nmax <- N0 # for Nq vs q plots
+#nmax <- 100000 
+nmax <- N0 # for Nq vs q plots
 
 #################################################################
 
@@ -62,7 +62,7 @@ data_filename <- "out.csv"
 
 # save parameters
 var_names <- ls()
-variables_to_save <- c("b","d","cost","D","D2","K","nr1","nr2","nr12","ns","a1","a2","a1_2","a2_2","ord")  # add variables to save
+variables_to_save <- c("b","d","cost","D","D2","K","nr1","nr2","nr12","ns","N0","a1","a2","a1_2","a2_2","ord")  # add variables to save
 variables_to_save <- intersect(variables_to_save, var_names)
 var_data <- data.frame(t(sapply(variables_to_save, get)))
 write.csv(var_data, file = file.path(output_dir, params_filename), row.names = FALSE) 

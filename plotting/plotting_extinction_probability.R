@@ -9,15 +9,20 @@ suppressPackageStartupMessages({
 # setting theme for plots
 theme_set(theme_linedraw())
 
+# edit this block 
+#################################################################
+
 # simulation data directory path relative to the working directory
 main_simdir <- "../simulation_data"
-sub_simdir <- "seed_1mil_2.0_1.2"
+sub_simdir <- "default"
 simdir <- file.path(main_simdir, sub_simdir)
 
 # analytical model data directory path relative to the working directory
 main_amdir <- "extinction_probability_plots"
-sub_amdir <- "D_2.0_D2_1.2"
+sub_amdir <- "default"
 amdir <- file.path(main_amdir, sub_amdir)
+
+#################################################################
 
 # simulation data
 all_seeds <- list.dirs(simdir, recursive = FALSE)
@@ -46,7 +51,7 @@ plot_data[which(plot_data$V1<avg_nmin & (plot_data$types=="after min" | plot_dat
 
 # analytical model data
 PE_data <- read.csv(file = file.path(amdir,"out.csv"))
-colnames(PE_data) <- c("n_tau", "PE_before", "PE_after")
+colnames(PE_data) <- c("N_tau", "PE_before", "PE_after")
 nmax <- 100000 
 nmin <- PE_data[1,1]
 
@@ -57,9 +62,9 @@ epplot <- ggplot(data = plot_data,aes(x=V1, color=types))+
                       breaks=c("omit", "min" ,"after min", "before min",  "no 2nd strike"))+
   geom_errorbar(aes(ymin = EP - 1.96 * SE, ymax = EP + 1.96 * SE), width = 0.2)+
   geom_line(data=PE_data,
-            aes(x=n_tau, y=PE_before), lwd=1, color='black')+
+            aes(x=N_tau, y=PE_before), lwd=1, color='black')+
   geom_line(data=PE_data,
-            aes(x=n_tau, y=PE_after), lwd=1, color='blue')+
+            aes(x=N_tau, y=PE_after), lwd=1, color='blue')+
   geom_vline(xintercept = nmin, lty=2, lwd=1.5, color='red', alpha=0.7)+
   geom_hline(yintercept = 0, col='grey50')+
   scale_x_continuous(limits = c(0, nmax), breaks = c(0, 0.5*nmax, nmax))+
@@ -71,6 +76,6 @@ epplot <- ggplot(data = plot_data,aes(x=V1, color=types))+
         text = element_text(size=rel(5)))
 
 
-pdf(file.path(amdir,"plot.pdf"), height = 5, width = 6)
+pdf(file.path(amdir,"plot_test.pdf"), height = 5, width = 6)
 print(epplot)
 dev.off()
