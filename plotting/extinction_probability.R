@@ -5,7 +5,6 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(latex2exp)
   library(deSolve)
-  library(pbapply)
 })
 # setting theme for plots
 theme_set(theme_linedraw())
