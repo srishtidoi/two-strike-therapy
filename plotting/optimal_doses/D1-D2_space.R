@@ -13,6 +13,7 @@ suppressPackageStartupMessages({
 
 # path relative to the working directory
 main_dir <- "optimal_doses/all_data" # for plots like Fig2A
+params_filename <- "params.csv"
 
 # treatment level space
 D1range <- seq(1,3,0.02) # delta_1, treatment level in E1
@@ -46,6 +47,13 @@ s <- b-d # growth rate of S cells
 cost <- 0.5 # cost of resistance
 r <- s-cost # growth rate of resistant cells (R1,R2,R12)
 pi2 <- 1-exp(-2*(r)/(b + d - cost)) # establishment probability
+
+# save parameters
+var_names <- ls()
+variables_to_save <- c("b","d","cost","K","nr1","nr2","nr12","ns","N0","a1","a2","a1_2","a2_2","ord")  # add variables to save
+variables_to_save <- intersect(variables_to_save, var_names)
+var_data <- data.frame(t(sapply(variables_to_save, get)))
+write.csv(var_data, file = file.path(main_dir, params_filename), row.names = FALSE) 
 
 
 # define growth functions
