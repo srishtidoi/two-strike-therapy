@@ -5,6 +5,7 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(latex2exp)
   library(deSolve)
+  library(scales)
 })
 # setting theme for plots
 theme_set(theme_linedraw())
@@ -14,12 +15,12 @@ theme_set(theme_linedraw())
 
 # simulation data directory path relative to the working directory
 main_simdir <- "../simulation_data"
-sub_simdir <- "default"
+sub_simdir <- "D2.0_1.2"
 simdir <- file.path(main_simdir, sub_simdir)
 
 # analytical model data directory path relative to the working directory
 main_amdir <- "extinction_probability_plots"
-sub_amdir <- "default"
+sub_amdir <- "D2.0_1.2"
 amdir <- file.path(main_amdir, sub_amdir)
 
 #################################################################
@@ -55,10 +56,15 @@ colnames(PE_data) <- c("N_tau", "PE_before", "PE_after")
 nmax <- 100000 
 nmin <- PE_data[1,1]
 
+scientific <- function(x){
+  ifelse(x==0,"0",parse(text=gsub("[+]","",gsub("e","%*% 10^",scientific_format()(x)))))
+}
+
 epplot <- ggplot(data = plot_data,aes(x=V1, color=types))+
   geom_point(aes(y=EP), size=3, alpha=1)+
-  labs(x=TeX("$N(tau)$"), y=TeX("$P_{E}$"))+
-  scale_colour_manual(values=c("white", "#56B4E9","#56B4E9","grey20","#CC79A7"),name="",
+  #labs(x=TeX("$N(tau)$"), y=TeX("$P_{E}$"))+
+  labs(x="",y="")+
+  scale_colour_manual(values=c("white", "#56B4E9","#56B4E9","grey20","grey20"),name="",
                       breaks=c("omit", "min" ,"after min", "before min",  "no 2nd strike"))+
   geom_errorbar(aes(ymin = EP - 1.96 * SE, ymax = EP + 1.96 * SE), width = 0.2)+
   geom_line(data=PE_data,
@@ -67,15 +73,20 @@ epplot <- ggplot(data = plot_data,aes(x=V1, color=types))+
             aes(x=N_tau, y=PE_after), lwd=1, color='blue')+
   geom_vline(xintercept = nmin, lty=2, lwd=1.5, color='red', alpha=0.7)+
   geom_hline(yintercept = 0, col='grey50')+
-  scale_x_continuous(limits = c(0, nmax), breaks = c(0, 0.5*nmax, nmax))+
+  scale_x_continuous(limits = c(0, nmax), breaks = c(0, 5*10^4, nmax),labels=scientific)+
   scale_y_continuous(limits=c(0,1), breaks=c(0,0.5,1))+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         aspect.ratio = 1, 
         legend.position = "",
-        text = element_text(size=rel(5)))
+        text = element_text(size=rel(5.5)))
+
+# Uncomment to remove y axis labels and ticks
+#epplot <- epplot +
+#  theme(axis.text.y=element_blank(), 
+#        axis.ticks.y=element_blank())
 
 
-pdf(file.path(amdir,"plot_test.pdf"), height = 5, width = 6)
+pdf(file.path(amdir,"plot.pdf"), height = 5, width = 6)
 print(epplot)
 dev.off()

@@ -19,13 +19,13 @@ theme_set(theme_linedraw())
 # edit this block 
 #################################################################
 
-main_dir <- "optimal_doses/data_default/"
+main_dir <- "optimal_doses/data_R2_0/"
 # main_dir <- "b-d_space/data_default"
 plots_dir <- "optimal_doses/plots"
 # plots_dir <- "b-d_space/plots"
 
-output_file <- "heatmap_data_default.csv"
-plot_file <- "heatmap_default_before.pdf"
+output_file <- "heatmap_data_cost_0.csv"
+plot_file <- "heatmap_cost_0_after.pdf"
 
 D1range <- seq(1,3,0.02)
 D2range <- seq(1,3,0.02)
@@ -105,14 +105,15 @@ write.csv(data, file = file.path(plots_dir,output_file), row.names = FALSE)
 
 # plotting high extinction probability region heatmap
 data <- read.csv(file=file.path(plots_dir,output_file))
-my_palette <- viridis_pal(option = "rocket")(12)
+my_palette <- viridis_pal(option = "rocket")(13)
 hpr_plot <- ggplot(data=data, aes(x=X,y=Y))+
   # edit this line to plot other quantities
-  geom_contour_filled(aes(z=PE_before),breaks=c(0,3000,7000,12000,16000))+
-  scale_fill_manual(values = my_palette[c(1,3,5,7,10,12)])+
+  geom_contour_filled(aes(z=PE_after), breaks = c(0,20000,30000,35000,65000))+#,breaks=c(0,3000,7000,12000,16000))+
+  scale_fill_manual(values = my_palette[c(1,6,8,10,12)])+
   geom_contour(aes(z=PE_optimal), col="white", breaks = c(0.9,0.94,0.96,0.98,0.99))+
-  geom_contour(aes(z=optimal_N_tau), col="yellow", breaks = c(1000,5000,10000,30000,50000))+
+  #geom_contour(aes(z=optimal_N_tau), col="yellow", breaks = c(1000,5000,10000,30000,50000))+
   #### edit the next four lines for b-d space plots
+  geom_line(aes(x=X,y=X))+
   labs(x=TeX("$delta_{1}$"), y=TeX("$delta_{2}$"))+
   # geom_line(aes(x=X, y=X*(1-rel_cost)))+ # where d=b-cost
   # geom_line(aes(x=X, y=X-0.9), linetype=2)+ # where b-d=0.9
@@ -126,7 +127,6 @@ hpr_plot <- ggplot(data=data, aes(x=X,y=Y))+
         legend.key.size = unit(0.8,"cm"),
         text = element_text(size=rel(4.4)))
 
-pdf(file=file.path(plots_dir,plot_file), height=3, width = 3)
+#pdf(file=file.path(plots_dir,plot_file), height=3, width = 3)
 print(hpr_plot)
-dev.off()
-
+#dev.off()

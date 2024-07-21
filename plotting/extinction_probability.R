@@ -37,16 +37,16 @@ r <- s-cost # growth rate of resistant cells (R1,R2,R12)
 pi2 <- 1-exp(-2*(r)/(b + d - cost)) # establishment probability
 
 # path relative to the working directory
-#main_dir <- "extinction_probability_plots" # for plots like Fig1A
-main_dir <- "Nq_plots/data" # for plots like Fig1C
+main_dir <- "extinction_probability_plots" # for plots like Fig1A
+#main_dir <- "Nq_plots/data" # for plots like Fig1C
 
 # output directory name
 sub_dir <- "default"
 
 # switching points
 step <- 1000
-#nmax <- 100000 
-nmax <- N0 # for Nq vs q plots
+nmax <- 100000 # for plots like Fig1A
+#nmax <- N0 # for plots like Fig1C
 
 #################################################################
 
