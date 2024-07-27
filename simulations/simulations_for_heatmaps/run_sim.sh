@@ -3,8 +3,8 @@
 #SBATCH -D <home directory of the user>
 #SBATCH --job-name=<job name>
 #SBATCH --partition=nodes
-#SBATCH --ntasks <number of tasks to run simultaneously. 1 task = 1 run of a simulation>
-#SBATCH --array=N%n <N=number of parameter values, n=to run simultaneously>
+#SBATCH --ntasks 50 <number of tasks to run simultaneously. 1 task = 1 run of a simulation>
+#SBATCH --array=1-11 <number of parameter values>
 #SBATCH --mem=10G <memory allocation>
 #SBATCH --time=01:00:00 <time allocation, dd-hh:mm:ss>
 #SBATCH -e results/%x_%A_%a.e <error file>
@@ -12,7 +12,7 @@
 
 #Edit the lines above to either remove or replace all text in <...>
 
-#Enable modules command (do not edit)
+#Enable modules
 source /opt/flight/etc/setup.sh
 flight env activate gridware
 module purge
@@ -21,7 +21,7 @@ module add python/3.9.7
 
 
 #Set job array variables. The config file lists all parameter values to run the simulations for
-config=~/config.txt
+config=config.txt
 value=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 echo param value: $value
 
@@ -31,8 +31,8 @@ echo param value: $value
 #The number of cores must be the same as --ntasks above
 
 param=n_tau
-dirname=simulation_data/
-n_cores=-1
+dirname=../../simulation_data/test
+n_cores=50
 
 #creating data directory
 mkdir $dirname

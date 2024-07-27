@@ -14,7 +14,9 @@ sim_data_dir = params.data_dir
 start_time = time.time()
 CPU_start_time = time.process_time()
 
-# reading all parameters from params file and command line arguments and saving them to a csv file. See the functions and params files for the descriptions and default values of all parameters.
+# reading all parameters from params file and command line arguments
+# and saving them to a csv file. See the functions and params files
+# for descriptions and default values of all parameters.
 
 seed = params.seed
 
@@ -35,7 +37,8 @@ pop_dist_init = np.array(list(params.pop_dist))
 K = params.K 
 
 
-# the case with no second strike. If the population relapses, we note the N_min and t_min (time at which N_min occurs)
+# the case with no second strike. If the population relapses,
+# we note the N_min and t_min (time at which N_min occurs)
 first_run_results = fn.first_run()
 N_min = first_run_results[3]
 t_min = first_run_results[4]
@@ -50,12 +53,18 @@ fn.save_params(sim_data_dir+"/params.csv", "n", "w_lambda", "mus_vector",
             "cost_vector", "mutation_probs", "mutation_vector", "seed",
             "therapy_vector", "t_res", "T", "N_max", "n_cores", "pop_dist_init","K")
 
+# Defining switching sizes (N_tau):
+# If switching at multiples of N_min 
+#N_tau_factors = np.concatenate((np.linspace(20, 1, 30, endpoint=False), np.linspace(1,20, 31)))
+#N_tau_range = N_min*N_tau_factors
 
-# the multiples of N_min to be tested with the same random seed
-N_tau_factors = np.concatenate((np.linspace(20, 1, 30, endpoint=False), np.linspace(1,20, 31)))
-N_tau_range = N_min*N_tau_factors
-#N_tau_range = np.append(np.linspace(sum(pop_dist_init), N_min, 20, endpoint=False), np.linspace(N_min, sum(pop_dist_init), 21))
+# If switching at pre-determined switching sizes
+factor=int(pop_dist_init[0]/10000)
+N_tau_range = np.concatenate((np.linspace(10000,10,30, endpoint=False), np.linspace(10,10000, 31)))*factor
+
+# Defining threshold types
 threshold_types  = np.append(np.tile("before-min",30), np.tile("after-min",31))
+
 runs = np.arange(1,len(threshold_types)+1)
 
 # Running the simulation            
