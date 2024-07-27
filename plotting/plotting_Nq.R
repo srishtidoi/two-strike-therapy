@@ -55,7 +55,7 @@ third <- compute_thresholds(data_third, params_third$N0)
 fourth <- compute_thresholds(data_fourth, params_fourth$N0)
 
 y_breaks <- c(1, 0.1, 0.01) #c(1e+04, 1e+06,1e+08)
-y_lims = c(0.001,1) #c(1e+03,1e+08)
+y_lims <- c(0.001,1) #c(1e+03,1e+08)
 
 nqplot <- ggplot()+
   geom_line(aes(x=seq(1,0,-0.01), y=default$befores))+
@@ -70,6 +70,7 @@ nqplot <- ggplot()+
   geom_line(aes(x=seq(1,0,-0.01), y=fourth$afters),colour="#56B4E9", linetype=5, alpha=0.5)+
   scale_y_continuous(trans="log", breaks=y_breaks, limits = y_lims)+
   ylab(TeX("$N_{q}/N(0)$"))+xlab(TeX("$q$"))+
+  #ylab("")+xlab("")+
   scale_x_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1.0))+
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
