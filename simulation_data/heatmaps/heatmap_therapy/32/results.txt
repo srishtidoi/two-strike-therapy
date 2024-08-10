@@ -1,0 +1,4 @@
+n_runs,  500
+extinction probability,  0.442
+progression probability,  0.558
+persistence probability,  0.0

@@ -1,0 +1,21 @@
+This directory contains simulation data for extinction probability heatmaps
+when varying the following environmental and demographic conditions:
+
+1) Treatment level (D1=D2, therapy)
+2) Cost of resistance (c, cost)
+3) Carrying capacity (K)
+4) Birth rate (b)
+5) Death rate (d)
+
+Each directory contains several subdirectories with data for different 
+values of the parameter of interest. The file 'config.txt' lists the 
+values of this parameter, the switching point and the corresponding subdirectory.
+
+Each subdirectory contains 2 files:
+
+2) 'results.txt': result of 500 independent runs (before-nadir extinction 
+   probability, progression probability and persistence probability). 
+3) 'params.csv'
+
+  
+
