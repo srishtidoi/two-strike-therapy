@@ -1,0 +1,23 @@
+This directory contains simulation data for extinction probabilities in
+several cases under the following environmental and demographic conditions:
+
+1) Treatment level (D=D1=D2) = 1.2, 1.6, 2.0, 2.4, 2.8
+2) Cost of resistance (c) = 0 ('nocost'), 0.5 ('default')
+3) Initial R2 population (R2(0)) = 0 ('noR2'), 100 ('default')
+
+There are 2 cases with unequal treatment levels (D1!=D2):
+'D1.2_2.0': D1=1.2, D2=2.0
+'D2.0_1.2': D1=2.0, D2=1.2
+
+Each directory contains 100 subdirectories with data from independent runs.
+Each subfolder contains 3 files:
+
+1) 'mins.txt': values of N_min and t_min for this independent run
+2) 'outcome_data.csv': result of this independent run (0=extinction, 
+   1=progression, 2=persistence) for several switching sizes. The first 30
+   lines show before-nadir switching points and the last line is the result
+   without any second treatment. The rest are after-nadir switching points.
+3) 'params.csv'
+
+  
+

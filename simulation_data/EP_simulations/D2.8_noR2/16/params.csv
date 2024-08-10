@@ -1,0 +1,2 @@
+n,w_lambda,mus_vector,cost_vector,mutation_probs,mutation_vector,seed,therapy_vector,t_res,T,N_max,n_cores,pop_dist_init,K
+4,1,[0.1 0.1 0.1 0.1],[0.  0.5 0.5 0.5],[0.25 0.25],[1.e-05 1.e-05],16.0,[2.8 2.8],0.01,300,1100000,50,[1000000     100       0       0],1000200
