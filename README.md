@@ -1,10 +1,7 @@
 Code for the preprint _Preventing evolutionary rescue in cancer_, Srishti Patil, Armaan Ahmed, Yannick Viossat, Robert John Noble; bioRxiv 2023.11.22.568336; doi: https://doi.org/10.1101/2023.11.22.568336
 
-## Simulation data
-[Simulation data](./simulation_data) is generated using a Gillepsie-like implementation to generate extinction probability plots and heatmaps. Find further description in the subfolders.
-
-## Simulation code
-[Code](./simulations) for the Gillespie simulations.
+## Simulations
+[Simulation data](./simulation_data) is generated using a [Gillepsie implementation](./simulations) to generate extinction probability plots and heatmaps. Find further description in the subfolders.
 
 ## Analytical model and plotting
 The folder [plotting](./plotting) contains scripts to calculate extinction probabilities using the analytical model and plot them along with simulation data:
